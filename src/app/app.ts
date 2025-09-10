@@ -34,16 +34,16 @@ type Filter = 'all' | 'active' | 'completed';
             <option value="active">Active</option>
             <option value="completed">Completed</option>
           </select>
-          <button (click)="clearCompleted()">Clear completed</button>
+          <button (click)="clearCompletedTodos()">Clear completed</button>
         </div>
 
-        <app-todo-input (add)="add($event)"></app-todo-input>
+        <app-todo-input (add)="addNewTodo($event)"></app-todo-input>
 
         <app-todo-list
           [todos]="filteredTodos"
-          (toggle)="toggle($event)"
-          (remove)="remove($event)"
-          (edit)="edit($event)"
+          (toggle)="toggleTodoChangeStatus($event)"
+          (remove)="deleteTodo($event)"
+          (edit)="updateTodoTitle($event)"
         >
         </app-todo-list>
 
@@ -70,23 +70,23 @@ export class AppComponent {
     this.refresh();
   }
 
-  add(title: string) {
-    this.todoSvc.add(title);
+  addNewTodo(title: string) {
+    this.todoSvc.addNewTodo(title);
     this.refresh();
   }
-  toggle(id: number) {
+  toggleTodoChangeStatus(id: number) {
     this.todoSvc.toggleTodoChangeStatus(id);
     this.refresh();
   }
-  remove(id: number) {
+  deleteTodo(id: number) {
     this.todoSvc.deleteTodo(id);
     this.refresh();
   }
-  edit(e: { id: number; title: string }) {
+  updateTodoTitle(e: { id: number; title: string }) {
     this.todoSvc.updateTodoTitle(e.id, e.title);
     this.refresh();
   }
-  clearCompleted() {
+  clearCompletedTodos() {
     this.todoSvc.clearCompletedTodos();
     this.refresh();
   }

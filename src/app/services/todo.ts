@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { Todo } from '../models/todo';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoService {
   private readonly storageKey = 'todos-ng20';
   private todoList: Todo[] = this.loadFromStorage();
 
   private loadFromStorage(): Todo[] {
-    try { return JSON.parse(localStorage.getItem(this.storageKey) ?? '[]'); }
-    catch { return []; }
+    try {
+      return JSON.parse(localStorage.getItem(this.storageKey) ?? '[]');
+    } catch {
+      return [];
+    }
   }
 
   private saveToStorage() {
@@ -18,14 +21,14 @@ export class TodoService {
   }
 
   private findTodoById(id: number): Todo | undefined {
-    return this.todoList.find(todo => todo.id === id);
+    return this.todoList.find((todo) => todo.id === id);
   }
 
   getAllTodos(): Todo[] {
     return [...this.todoList];
   }
 
-  add(title: string) {
+  addNewTodo(title: string) {
     const trimmedTitle = title.trim();
     if (!trimmedTitle) return;
 
@@ -35,7 +38,7 @@ export class TodoService {
       completed: false,
       createdAt: Date.now(),
     };
-    
+
     this.todoList.unshift(newTodo);
     this.saveToStorage();
   }
@@ -49,7 +52,7 @@ export class TodoService {
   }
 
   updateTodoTitle(id: number, newTitle: string) {
-    const todo = this.todoList.find(x => x.id === id);
+    const todo = this.todoList.find((x) => x.id === id);
 
     if (todo) {
       todo.title = newTitle.trim();
@@ -58,12 +61,12 @@ export class TodoService {
   }
 
   deleteTodo(id: number) {
-    this.todoList = this.todoList.filter(todo => todo.id !== id);
+    this.todoList = this.todoList.filter((todo) => todo.id !== id);
     this.saveToStorage();
   }
 
   clearCompletedTodos() {
-    this.todoList = this.todoList.filter(todo => !todo.completed);
+    this.todoList = this.todoList.filter((todo) => !todo.completed);
     this.saveToStorage();
   }
 }
