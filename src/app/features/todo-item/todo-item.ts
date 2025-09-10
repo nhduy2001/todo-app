@@ -45,10 +45,26 @@ export class TodoItemComponent {
 
   editing = false;
   tempTitle = '';
+  private prevTitle = '';
 
-  ngOnChanges(changes: SimpleChanges) {}
-  ngDoCheck() {}
-  ngOnDestroy() {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['todo']) {
+      const prev = changes['todo'].previousValue;
+      const curr = changes['todo'].currentValue;
+      if (prev && curr && prev.completed !== curr.completed) {
+        console.log(`Todo "${curr.title}" has changed completion status`);
+      }
+    }
+  }
+  ngDoCheck() {
+    if (this.todo && this.todo.title !== this.prevTitle) {
+      console.log('Title changed manually');
+      this.prevTitle = this.todo.title;
+    }
+  }
+  ngOnDestroy() {
+    console.log(`Todo "${this.todo.title}" is being destroyed.`);
+  }
 
   startEdit() {
     this.editing = true;
